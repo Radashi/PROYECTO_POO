@@ -50,30 +50,36 @@ public class ControladorVistaLogin implements MouseListener {
         ModeloUsuario.setTipo(""); // No se conoce
     }
     private void buscarUsuarioPassWord() {
-        if (camposValidos() == true) { // Hay Texto en los campos
-            llenarModeloConCampos(); // para que lleve la información que necesita la consulta SQL
+            if (camposValidos() == true) {
+                llenarModeloConCampos();
 
-            if (ConsultasUsuario.buscarLogin(ModeloUsuario) == true) { // si encontro al usuario
-                // El ModeloUsuario ya lleno sus campos faltantes con la busqueda (nombre y tipo)
-                // ya solo desplegarlos y dar la bienvenida
-                JOptionPane.showMessageDialog(null, "Bienvenido: " + ModeloUsuario.getNombre(),
-                        "Tipo: " + ModeloUsuario.getTipo(), 1); // 1 = tipo de icono
+                if (ConsultasUsuario.buscarLogin(ModeloUsuario) == true) {
 
-                // Liberar la ventana del login
-                VistaLogin.dispose();
+                    JOptionPane.showMessageDialog(null, "Bienvenido: " + ModeloUsuario.getNombre(),
+                            "Tipo: " + ModeloUsuario.getTipo(), 1);
 
-                // Crear el Modelo Vista de la pantalla principal
-                VistaPantallaPrincipal VistaPantallaPrincipal = new VistaPantallaPrincipal();
-                ControladorVistaPantallaPrincipal ControladorVistaPantallaPrincipal = new ControladorVistaPantallaPrincipal(VistaPantallaPrincipal);
+                    VistaLogin.dispose();
 
-            } else { // usuario no existe o contraseña incorrecta
-                JOptionPane.showMessageDialog(null, "Usuario o Password Incorrectos");
+                    // Crear el Modelo Vista de la pantalla principal
+                    VistaPantallaPrincipal VistaPantallaPrincipal = new VistaPantallaPrincipal();
+                    ControladorVistaPantallaPrincipal ControladorVistaPantallaPrincipal = new ControladorVistaPantallaPrincipal(VistaPantallaPrincipal);
+
+                    if (!ModeloUsuario.getTipo().equals("SuperAdministrador")) {
+                        // Ocultamos el botón de Usuarios
+                        VistaPantallaPrincipal.btnUsuario.setVisible(false);
+                    }
+
+                    // Aseguramos que la ventana principal se haga visible aquí
+                    VistaPantallaPrincipal.setVisible(true);
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Usuario o Password Incorrectos");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Debes de colocar texto en los campos"
+                        + " usuario y password");
             }
-        } else { // Algun campo esta vacio o ambos (usuario/password)
-            JOptionPane.showMessageDialog(null, "Debes de colocar texto en los campos"
-                    + " usuario y password");
         }
-    }
 
     // =========================================================
     // EVENTOS DEL MOUSE
@@ -101,11 +107,14 @@ public class ControladorVistaLogin implements MouseListener {
         // Lógica para ocultar la contraseña al soltar el ojito     if (e.getSource() == VistaLogin.LblOjito) {
             VistaLogin.TxtPassword.setEchoChar('*'); // Oculta el texto con asteriscos
         }
+
+    @Override
+    public void mouseEntered(MouseEvent mouseEvent) {
+
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseExited(MouseEvent mouseEvent) {
 
-    @Override
-    public void mouseExited(MouseEvent e) {}
+    }
 }
