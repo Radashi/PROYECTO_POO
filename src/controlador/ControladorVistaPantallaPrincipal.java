@@ -1,52 +1,56 @@
 package controlador;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import vista.VistaPantallaPrincipal;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import javax.swing.JFrame;
+import vista.VistaUsuarios;
+import modelo.ModeloUsuario;
+import modelo.ConsultasUsuario;
 
-public class ControladorVistaPantallaPrincipal implements MouseListener {
+// Implementamos ActionListener para escuchar los clics de los botones
+public class ControladorVistaPantallaPrincipal implements ActionListener {
 
-    VistaPantallaPrincipal vistaPantallaPrincipal;
+    private VistaPantallaPrincipal vistaPrincipal;
 
-    // Constructor
-    public ControladorVistaPantallaPrincipal(VistaPantallaPrincipal vistaPantallaPrincipal) {
-        this.vistaPantallaPrincipal = vistaPantallaPrincipal;
-        oyentes();
-        this.vistaPantallaPrincipal.setVisible(true); // Hace visible la ventana al inicializar
-    }
+    public ControladorVistaPantallaPrincipal(VistaPantallaPrincipal vistaPrincipal) {
+        this.vistaPrincipal = vistaPrincipal;
 
-    // Método para agregar los listeners a los botones
-    private void oyentes() {
-        vistaPantallaPrincipal.btnMinimizar.addMouseListener(this);
-        vistaPantallaPrincipal.btnSalir.addMouseListener(this);
-        vistaPantallaPrincipal.btnUsuario.addMouseListener(this);
-        vistaPantallaPrincipal.btnProductos.addMouseListener(this);
+        this.vistaPrincipal.btnUsuario.addActionListener(this);
+        this.vistaPrincipal.btnProductos.addActionListener(this);
+        this.vistaPrincipal.btnSalir.addActionListener(this);
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        // Acción para el botón Salir
-        if (e.getSource() == vistaPantallaPrincipal.btnSalir) {
-            System.exit(0); // Cierra la aplicación completamente
+    public void actionPerformed(ActionEvent e) {
+
+        // SI HACEN CLIC EN EL BOTÓN "USUARIO"
+        if (e.getSource() == vistaPrincipal.btnUsuario) {
+
+            // 1. Instanciamos la Vista, el Modelo y las Consultas
+            VistaUsuarios vistaUsr = new VistaUsuarios();
+            ModeloUsuario modeloUsr = new ModeloUsuario();
+            ConsultasUsuario consultasUsr = new ConsultasUsuario();
+
+            // 2. Conectamos todo pasándoselo al Controlador de Usuarios
+            ControladorVistaUsuarios ctrlUsr = new ControladorVistaUsuarios(vistaUsr, modeloUsr, consultasUsr);
+
+            // 3. Hacemos visible la nueva ventana
+            vistaUsr.setVisible(true);
         }
-        // Acción para el botón Minimizar
-        else if (e.getSource() == vistaPantallaPrincipal.btnMinimizar) {
-            vistaPantallaPrincipal.setState(JFrame.ICONIFIED); // Minimiza la ventana
+
+        // SI HACEN CLIC EN EL BOTÓN "PRODUCTOS"
+        if (e.getSource() == vistaPrincipal.btnProductos) {
+            vista.VistaProductos vistaProd = new vista.VistaProductos();
+            modelo.ModeloProducto modeloProd = new modelo.ModeloProducto();
+            modelo.ConsultasProducto consultasProd = new modelo.ConsultasProducto();
+
+            controlador.ControladorVistaProductos ctrlProd = new controlador.ControladorVistaProductos(vistaProd, modeloProd, consultasProd);
+
+            vistaProd.setVisible(true);
         }
-        // Aquí puedes agregar los 'else if' para btnUsuario y btnProductos en el futuro
+
+        if (e.getSource() == vistaPrincipal.btnSalir) {
+            System.exit(0); // Cierra todo el programa
+        }
     }
-
-    // Métodos obligatorios de MouseListener (pueden quedar vacíos si no se usan)
-    @Override
-    public void mousePressed(MouseEvent e) {}
-
-    @Override
-    public void mouseReleased(MouseEvent e) {}
-
-    @Override
-    public void mouseEntered(MouseEvent e) {}
-
-    @Override
-    public void mouseExited(MouseEvent e) {}
 }

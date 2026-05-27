@@ -9,71 +9,76 @@ import javax.swing.JOptionPane;
 
 public class ConsultasProducto extends Conexion {
 
-    // Se conecta a la base de datos utilizando el método de la clase padre
-    Connection Con = getConexion();
-
-    public boolean insertar(ModeloProducto Modelo) {
+    // 1. GUARDAR (ALTA)
+    public boolean registrar(ModeloProducto modelo) {
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        String sql = "INSERT INTO productos (codigo, descripcion, precio) VALUES (?, ?, ?)";
         try {
-            PreparedStatement Ps;
-            String SQL = "insert into productos (codigo, descripcion, precio) values (?, ?, ?)";
-            Ps = Con.prepareStatement(SQL);
-            Ps.setInt(1, Modelo.getCodigo());
-            Ps.setString(2, Modelo.getDescripcion());
-            Ps.setFloat(3, Modelo.getPrecio());
-            Ps.executeUpdate();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, modelo.getCodigo());
+            ps.setString(2, modelo.getDescripcion());
+            ps.setFloat(3, modelo.getPrecio());
+            ps.execute();
             return true;
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error SQL: " + e);
+            JOptionPane.showMessageDialog(null, "Error al registrar producto: " + e.getMessage());
             return false;
         }
     }
 
-    public boolean modificar(ModeloProducto Modelo) {
+    // 2. BUSCAR
+    public boolean buscar(ModeloProducto modelo) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection con = getConexion();
+        String sql = "SELECT * FROM productos WHERE codigo = ?";
         try {
-            PreparedStatement Ps;
-            String SQL = "update productos set descripcion=?, precio=? where codigo=?";
-            Ps = Con.prepareStatement(SQL);
-            Ps.setString(1, Modelo.getDescripcion());
-            Ps.setFloat(2, Modelo.getPrecio());
-            Ps.setInt(3, Modelo.getCodigo());
-            Ps.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error SQL: " + e);
-            return false;
-        }
-    }
-
-    public boolean eliminar(ModeloProducto Modelo) {
-        try {
-            PreparedStatement Ps;
-            String SQL = "delete from productos where codigo=?";
-            Ps = Con.prepareStatement(SQL);
-            Ps.setInt(1, Modelo.getCodigo());
-            Ps.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error SQL: " + e);
-            return false;
-        }
-    }
-
-    public boolean buscar(ModeloProducto Modelo) {
-        try {
-            PreparedStatement Ps;
-            String SQL = "select * from productos where codigo = ?";
-            Ps = Con.prepareStatement(SQL);
-            Ps.setInt(1, Modelo.getCodigo());
-            ResultSet Rs = Ps.executeQuery();
-
-            if(Rs.next()) {
-                Modelo.setDescripcion(Rs.getString("descripcion"));
-                Modelo.setPrecio(Rs.getFloat("precio"));
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, modelo.getCodigo());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                modelo.setDescripcion(rs.getString("descripcion"));
+                modelo.setPrecio(rs.getFloat("precio"));
                 return true;
             }
             return false;
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error SQL: " + e);
+            JOptionPane.showMessageDialog(null, "Error al buscar producto: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // 3. MODIFICAR
+    public boolean modificar(ModeloProducto modelo) {
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        String sql = "UPDATE productos SET descripcion = ?, precio = ? WHERE codigo = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, modelo.getDescripcion());
+            ps.setFloat(2, modelo.getPrecio());
+            ps.setInt(3, modelo.getCodigo());
+            ps.execute();
+            return true;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al modificar producto: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // 4. ELIMINAR
+    public boolean eliminar(ModeloProducto modelo) {
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        String sql = "DELETE FROM productos WHERE codigo = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, modelo.getCodigo());
+            ps.execute();
+            return true;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar producto: " + e.getMessage());
             return false;
         }
     }

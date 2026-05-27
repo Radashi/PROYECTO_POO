@@ -28,17 +28,37 @@ public class ControladorVistaLogin implements MouseListener {
         VistaLogin.BtnLogin.addMouseListener(this);
         VistaLogin.BtnCerrar.addMouseListener(this);
 
-        // Activamos el oyente para el ojito del password (según el documento 2)
+        // Activamos el oyente para el ojito del password
         VistaLogin.LblOjito.addMouseListener(this);
+
+        VistaLogin.TxtUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent e) {
+                // Cuando hacemos clic en la cajita, si dice "user name", lo borramos
+                if (VistaLogin.TxtUsuario.getText().equals("user name")) {
+                    VistaLogin.TxtUsuario.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                // Cuando hacemos clic fuera de la cajita, si está vacía, le regresamos el texto
+                if (VistaLogin.TxtUsuario.getText().isEmpty()) {
+                    VistaLogin.TxtUsuario.setText("user name");
+                }
+            }
+        });
     }
 
-    // Funcion que retorna verdadero si los campos no estan vacios (Fig. 17)
+    // Funcion que retorna verdadero si los campos no estan vacios
     public boolean camposValidos() {
-        // Checa si estan vacios o no los campos de texto usuario y password
-        if (VistaLogin.TxtUsuario.getText().isEmpty() || VistaLogin.TxtPassword.getPassword().length == 0) {
-            return false; // Los campos estan vacios
+        String usuario = VistaLogin.TxtUsuario.getText();
+
+        // Checa si estan vacios, si el usuario sigue siendo "user name" o si el password está vacío
+        if (usuario.isEmpty() || usuario.equals("user name") || VistaLogin.TxtPassword.getPassword().length == 0) {
+            return false; // Los campos estan vacios (o tienen el placeholder)
         } else {
-            return true; // Los campos no estan vacios
+            return true; // Los campos son válidos
         }
     }
 

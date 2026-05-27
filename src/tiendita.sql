@@ -36,6 +36,7 @@ CREATE TABLE `productos` (
 
 LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
+INSERT INTO `productos` VALUES (1,'Uvas',12.00);
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -48,7 +49,7 @@ DROP TABLE IF EXISTS `usuarios`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuarios` (
   `Usuario` varchar(20) NOT NULL,
-  `Password` varchar(40) DEFAULT NULL,
+  `Password` varchar(64) DEFAULT NULL,
   `Nombre` varchar(80) DEFAULT NULL,
   `Tipo` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`Usuario`)
@@ -61,7 +62,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES ('angel','hola123','Ángel de Jesús Treviño','Registrado'),('satanas','hola123','Satanas Pérez González','SuperAdministrador');
+INSERT INTO `usuarios` VALUES ('','e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855','','Registrado'),('alex','f881b2373f6037f7057c395e3605ed92fdbbe5dee1eb558a62e1f74ca94e6a82','alex','SuperAdministrador'),('angel','b460b1982188f11d175f60ed670027e1afdd16558919fe47023ecd38329e0b7f','Ángel de Jesús Treviño','Registrado'),('satanas','b460b1982188f11d175f60ed670027e1afdd16558919fe47023ecd38329e0b7f','Satanas Pérez González','SuperAdministrador');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -74,4 +75,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-11 22:39:23
+-- Dump completed on 2026-05-26 20:49:38

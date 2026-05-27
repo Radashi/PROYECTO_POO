@@ -2,42 +2,17 @@ package modelo;
 
 public class ModeloProducto {
     private int codigo;
-    private String Descripcion;
+    private String descripcion;
     private float precio;
 
-    // Constructor vacío
-    public ModeloProducto() {
-    }
+    public ModeloProducto() {}
 
-    // Constructor con parámetros
-    public ModeloProducto(int codigo, String Descripcion, float precio, int presentacion) {
-        this.codigo = codigo;
-        this.Descripcion = Descripcion;
-        this.precio = precio;
-    }
+    public int getCodigo() { return codigo; }
+    public void setCodigo(int codigo) { this.codigo = codigo; }
 
-    // Getters y Setters
-    public int getCodigo() {
-        return codigo;
-    }
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
-    }
-
-    public String getDescripcion() {
-        return Descripcion;
-    }
-
-    public void setDescripcion(String Descripcion) {
-        this.Descripcion = Descripcion;
-    }
-
-    public float getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(float precio) {
-        this.precio = precio;
-    }
+    public float getPrecio() { return precio; }
+    public void setPrecio(float precio) { this.precio = precio; }
 }
